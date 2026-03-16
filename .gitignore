@@ -1,0 +1,15 @@
+# Dataset files - share via Google Drive instead
+data/
+
+# Python
+__pycache__/
+*.pyc
+.env
+venv/
+
+# Database
+*.db
+
+# OS
+.DS_Store
+Thumbs.db
