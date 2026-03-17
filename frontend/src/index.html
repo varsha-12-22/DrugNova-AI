@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DrugNova AI</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="logo">DrugNova <span>AI</span></div>
+    <p class="tagline">Autonomous Drug Repurposing Platform</p>
+  </header>
+
+  <main>
+    <section class="search-section">
+      <div class="search-box">
+        <input
+          type="text"
+          id="drugInput"
+          placeholder="Enter a drug name — e.g. Metformin, Aspirin, Lepirudin"
+          autocomplete="off"
+        />
+        <button id="analyzeBtn" onclick="analyze()">Analyze</button>
+      </div>
+      <p class="hint">Searches across 19,842 DrugBank compounds</p>
+    </section>
+
+    <section id="loading" class="hidden">
+      <div class="spinner"></div>
+      <p>Analyzing biological similarity across all compounds...</p>
+    </section>
+
+    <section id="error" class="hidden">
+      <div class="error-box">
+        <span id="errorMsg"></span>
+      </div>
+    </section>
+
+    <section id="report" class="hidden">
+      <div class="drug-header">
+        <div>
+          <h1 id="drugName"></h1>
+          <p id="drugId" class="drug-id"></p>
+        </div>
+        <div class="disease-badge" id="diseaseBadge"></div>
+      </div>
+
+      <div class="indication-box">
+        <h3>Current Indication</h3>
+        <p id="indication"></p>
+      </div>
+
+      <h2>Repurposing Candidates <span class="count" id="candidateCount"></span></h2>
+      <p class="section-desc">Drugs sharing gene targets and pathways with a different disease area</p>
+      <div id="candidates"></div>
+
+      <h2>Clinical Trials</h2>
+      <div id="trials"></div>
+
+      <h2>Interaction Warnings</h2>
+      <div id="interactions"></div>
+
+      <div class="sources-footer">
+        <p>All findings traceable to DrugBank CSV rows, ClinicalTrials.gov, and PubChem.</p>
+      </div>
+    </section>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

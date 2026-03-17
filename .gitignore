@@ -1,15 +1,33 @@
-# Dataset files - share via Google Drive instead
+# Data files — share via Google Drive
 data/
+
+# SQLite database (built locally from CSVs)
+*.db
+
+# Environment variables
+.env
 
 # Python
 __pycache__/
 *.pyc
-.env
+*.pyo
+*.pyd
+.Python
 venv/
-
-# Database
-*.db
+env/
+.venv/
+*.egg-info/
+dist/
+build/
 
 # OS
 .DS_Store
 Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# Logs
+*.log
