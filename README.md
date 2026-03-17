@@ -119,30 +119,25 @@ git clone https://github.com/varsha-12-22/DrugNova-AI.git
 cd DrugNova-AI
 ```
 
-### 2. Create your branch
-```bash
-git checkout -b feature/your-branch-name
-```
-
-### 3. Install dependencies
+### 2. Install dependencies
 ```bash
 pip install -r requirements.txt
 ```
 
-### 4. Set up environment variables
+### 3. Set up environment variables
 ```bash
 cp .env.example .env
 ```
 Open `.env` — add your PatentsView API key if you have one. Everything else works without a key.
 
-### 5. Add data files
+### 4. Add data files
 Download the 8 CSV files from the shared Google Drive and place them in `data/`
 
 ```bash
 ls data/   # should show all 8 files
 ```
 
-### 6. Build the interactions database (run once)
+### 5. Build the interactions database (run once)
 ```bash
 python scripts/build_interactions_db.py
 ```
