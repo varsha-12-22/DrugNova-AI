@@ -1,0 +1,44 @@
+# How to Run DrugNova AI
+
+This project has two main parts: the Python backend and the React frontend.
+
+## 1. Backend Setup & Run
+
+1. Open a terminal in the root directory (`d:\Projects\Bio-Nova\DrugNova-AI`).
+2. (Optional but recommended) Create and activate a Python virtual environment.
+3. Install the dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+4. Set up the environment variables:
+   - Copy `.env.example` to `.env`.
+   - Add your API keys if you have them (e.g., PatentsView API key). Most features work without a key.
+5. Ensure data files are present:
+   - Download the 8 CSV data files from your shared Google Drive and place them in the `data/` directory.
+6. Build the interactions SQLite database (this only needs to be run once):
+   ```bash
+   python scripts/build_interactions_db.py
+   ```
+7. Start the FastAPI backend server:
+   ```bash
+   uvicorn backend.main:app --reload
+   ```
+   The backend API will now be available at http://localhost:8000.
+   You can test it with:
+   `curl -X POST http://localhost:8000/analyze -H "Content-Type: application/json" -d '{"drug_name": "Metformin"}'`
+
+## 2. Frontend Setup & Run
+
+1. Open a new terminal and navigate to the `frontend-react` directory:
+   ```bash
+   cd frontend-react
+   ```
+2. Install the Node.js dependencies:
+   ```bash
+   npm install
+   ```
+3. Start the Vite development server:
+   ```bash
+   npm run dev
+   ```
+4. The React frontend will run on the URL provided by Vite in the terminal (typically http://localhost:5173). Open that URL in your web browser.

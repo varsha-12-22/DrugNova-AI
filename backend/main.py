@@ -1,5 +1,6 @@
 # P6 — main.py
 # FastAPI server — wires all modules into a single /analyze endpoint
+# Trigger uvicorn reload to load new CSVs
 
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,9 +11,9 @@ from backend.modules.model import model
 from backend.modules.explainer import explain_candidates
 from backend.modules.interactions import get_interactions
 from backend.modules.external_apis import fetch_clinical_trials, fetch_pubchem
-from backend.modules.patent_api import fetch_patents
+from backend.modules.patent import fetch_patents
 from backend.modules.regulatory_api import fetch_regulatory
-from backend.modules.sec_api import fetch_sec_signals
+
 from backend.modules.market_api import fetch_market_data
 from backend.utils.contracts import AnalysisReport
 
@@ -46,7 +47,7 @@ def analyze(req: AnalyzeRequest):
     drugbank_id = drug_data["drugbank_id"]
 
     # Step 2 — Find repurposing candidates via cosine similarity
-    candidates = model.find_candidates(drugbank_id, top_n=req.top_n)
+    candidates, target_vector = model.find_candidates(drugbank_id, top_n=req.top_n)
 
     # Step 3 — Generate traceable explanations
     explanation = explain_candidates(drug_data["name"], drugbank_id, candidates)
@@ -60,14 +61,13 @@ def analyze(req: AnalyzeRequest):
     # Step 6 — PubChem compound metadata
     pubchem = fetch_pubchem(drug_data["name"])
 
-    # Step 7 — Patent landscape
+    # Step 7 — Patent landscape (Europe PMC)
     patents = fetch_patents(drug_data["name"])
 
     # Step 8 — Regulatory scan (OpenFDA)
     regulatory = fetch_regulatory(drug_data["name"])
 
-    # Step 9 — SEC investment signals
-    sec = fetch_sec_signals(drug_data["name"])
+
 
     # Step 10 — Market size (CMS spending)
     market = fetch_market_data(drug_data["name"])
@@ -81,8 +81,9 @@ def analyze(req: AnalyzeRequest):
         repurposing_candidates=candidates,
         interaction_warnings=interactions.findings,
         clinical_trials=[{"info": f} for f in trials.findings],
+        target_vector=target_vector,
         module_results=[explanation, interactions, trials, pubchem,
-                        patents, regulatory, sec, market],
+                        patents, regulatory, market],
     )
 
     return report.to_dict()

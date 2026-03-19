@@ -1,0 +1,138 @@
+.carbon-loader-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  min-height: 140px;
+}
+
+.carbon-loader {
+  position: relative;
+  width: 100px;
+  height: 100px;
+  animation: spinLoader 10s linear infinite;
+}
+
+/* Rings */
+.orbital-ring {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border: 1px dashed rgba(79, 209, 197, 0.4);
+  border-radius: 50%;
+  animation: pulseRing 3s ease-in-out infinite alternate;
+}
+
+.orbital-ringring-2 {
+  position: absolute;
+  top: -15%;
+  left: -15%;
+  width: 130%;
+  height: 130%;
+  border: 1px solid rgba(49, 130, 206, 0.2);
+  border-radius: 50%;
+  animation: spinRing reverse 15s linear infinite;
+}
+
+/* Atoms */
+.atom {
+  border-radius: 50%;
+  background: #fff;
+}
+
+.central-atom {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 22px;
+  height: 22px;
+  background: #4fd1c5;
+  box-shadow: 0 0 15px #4fd1c5, 0 0 30px #4fd1c5, inset 0 0 5px #fff;
+  animation: pulseCentral 2s ease-in-out infinite alternate;
+  z-index: 5;
+}
+
+.orbiting-atom {
+  position: absolute;
+  right: -8px; /* half of width */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  box-shadow: 0 0 10px #3182ce, 0 0 20px #4fd1c5;
+  z-index: 4;
+}
+
+/* Bonds */
+.bond-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  height: 2px;
+  width: 0; /* Animated */
+  transform-origin: left center;
+  z-index: 3;
+}
+
+.bond {
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, #4fd1c5, rgba(49, 130, 206, 0.8));
+  box-shadow: 0 0 8px rgba(79, 209, 197, 0.8);
+}
+
+/* Apply different initial rotations and animation delays to bonds */
+.bond1 { transform: translateY(-50%) rotate(45deg); animation: stretchBond 2s ease-in-out infinite alternate; }
+.bond2 { transform: translateY(-50%) rotate(135deg); animation: stretchBond 2s ease-in-out infinite alternate 0.5s; }
+.bond3 { transform: translateY(-50%) rotate(225deg); animation: stretchBond 2s ease-in-out infinite alternate 1s; }
+.bond4 { transform: translateY(-50%) rotate(315deg); animation: stretchBond 2s ease-in-out infinite alternate 1.5s; }
+
+/* Small floating particles for a sci-fi feel */
+.particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background: #fff;
+  border-radius: 50%;
+  box-shadow: 0 0 5px #fff, 0 0 10px #0ff;
+}
+
+.p1 { top: 10%; left: 10%; animation: floatParticle 4s infinite alternate; }
+.p2 { top: 80%; left: 20%; animation: floatParticle 5s infinite alternate 1s; }
+.p3 { top: 40%; left: 90%; animation: floatParticle 3s infinite alternate 2s; }
+
+/* Keyframes */
+@keyframes spinLoader {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes spinRing {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes pulseCentral {
+  0% { box-shadow: 0 0 10px #4fd1c5, 0 0 20px #4fd1c5; transform: translate(-50%, -50%) scale(0.9); }
+  100% { box-shadow: 0 0 20px #4fd1c5, 0 0 40px #4fd1c5; transform: translate(-50%, -50%) scale(1.1); }
+}
+
+@keyframes pulseRing {
+  0% { transform: scale(0.95); opacity: 0.5; }
+  100% { transform: scale(1.05); opacity: 1; }
+}
+
+@keyframes stretchBond {
+  0%, 10% { width: 15px; opacity: 0; }
+  20%, 30% { opacity: 1; }
+  90%, 100% { width: 50px; opacity: 1; }
+}
+
+@keyframes floatParticle {
+  0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+  100% { transform: translate(15px, -15px) scale(1.5); opacity: 1; }
+}

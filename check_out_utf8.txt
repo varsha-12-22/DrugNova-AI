@@ -1,0 +1,32 @@
+Targets head:
+drugbank_id
+DB00001                                                 [F2]
+DB00002    [EGFR, FCGR3B, C1QA, C1QB, C1QC, FCGR3A, FCGR1...
+DB00003                                             [DNASE1]
+DB00004                                       [IL2RA, IL2RB]
+DB00005    [TNF, LTA, FCGR1A, FCGR2A, FCGR2B, FCGR2C, FCG...
+Name: gene_symbol, dtype: object
+Pathways head:
+drugbank_id
+DB00001      [Lepirudin Action Pathway]
+DB00002      [Cetuximab Action Pathway]
+DB00006    [Bivalirudin Action Pathway]
+DB00009      [Alteplase Action Pathway]
+DB00013      [Urokinase Action Pathway]
+Name: pathway_name, dtype: object
+Metformin disease_area in data_layer: Alimentary Tract and Metabolism|Amidines|Biguanides|Blood Glucose Lowering Agents|Drugs that are Mainly Renally Excreted|Drugs Used in Diabetes|Guanidines|MATE 1 Substrates|MATE 2 Substrates|MATE substrates|OCT1 substrates|OCT2 Inhibitors|OCT2 Substrates|Oral Hypoglycemics
+Number of candidates found: 10
+  Linagliptin - Score: 0.46 - Disease Area: Agents causing angioedema|Alimentary Tract and Metabolism|Blood Glucose Lowering Agents|Cytochrome P-450 CYP3A Inhibitors|Cytochrome P-450 CYP3A Substrates|Cytochrome P-450 CYP3A4 Inhibitors|Cytochrome P-450 CYP3A4 Inhibitors (moderate)|Cytochrome P-450 CYP3A4 Substrates|Cytochrome P-450 CYP3A4 Substrates (strength unknown)|Cytochrome P-450 Enzyme Inhibitors|Cytochrome P-450 Substrates|DPP-IV Inhibitors|Drugs Used in Diabetes|Enzyme Inhibitors|Heterocyclic Compounds, Fused-Ring|Hormones|Hormones, Hormone Substitutes, and Hormone Antagonists|Incretins|OCT1 inhibitors|OCT2 Inhibitors|OCT2 Substrates|Oral Hypoglycemics|P-glycoprotein inhibitors|P-glycoprotein substrates|Protease Inhibitors|Purines|Quinazolines
+  Arimoclomol - Score: 0.45 - Disease Area: Amines|MATE 1 Substrates|MATE 2 Substrates|MATE substrates|Nervous System|OCT2 Inhibitors
+  Buformin - Score: 0.43 - Disease Area: Alimentary Tract and Metabolism|Amidines|Biguanides|Blood Glucose Lowering Agents|Drugs Used in Diabetes|Guanidines|OCT1 substrates|Oral Hypoglycemics
+  Phenformin - Score: 0.43 - Disease Area: Alimentary Tract and Metabolism|Amidines|Biguanides|Blood Glucose Lowering Agents|Cytochrome P-450 CYP2D6 Substrates|Cytochrome P-450 Substrates|Drugs Used in Diabetes|Guanidines|OCT1 inhibitors|OCT1 substrates|OCT2 Inhibitors|Oral Hypoglycemics
+  N-methylnicotinamide - Score: 0.40 - Disease Area: Alimentary Tract and Metabolism|Bile and Liver Therapy|Bile Therapy|Drugs that are Mainly Renally Excreted|MATE 1 Substrates|MATE 2 Substrates|MATE substrates|Nicotinic Acids|Preparations for Biliary Tract Therapy|Pyridines
+  Guanidine - Score: 0.40 - Disease Area: Acetylcholine Releasing Agent|Amidines|Guanidines|Increased Acetylcholine Activity|MATE 1 Substrates|MATE 2 Substrates|MATE substrates|OAT3/SLC22A8 Inhibitors|OCT1 inhibitors|OCT2 Inhibitors
+  Procainamide - Score: 0.40 - Disease Area: Acids, Carbocyclic|Agents Causing Muscle Toxicity|Agents that produce neuromuscular block (indirect)|Amides|Aminobenzoates|Antiarrhythmic agents|Antiarrhythmics, Class I|Antiarrhythmics, Class Ia|Benzamides and benzamide derivatives|Benzene Derivatives|Benzoates|Cardiac Therapy|Cardiovascular Agents|Cholinesterase Inhibitors|Cytochrome P-450 CYP2D6 Substrates|Cytochrome P-450 CYP2D6 Substrates with a Narrow Therapeutic Index|Cytochrome P-450 Substrates|Drugs that are Mainly Renally Excreted|Drugs that are Mainly Renally Excreted with a Narrow Therapeutic Index|Highest Risk QTc-Prolonging Agents|MATE 1 Substrates|MATE 1 Substrates with a Narrow Therapeutic Index|MATE 2 Substrates|MATE 2 Substrates with a Narrow Therapeutic Index|MATE substrates|Membrane Transport Modulators|Narrow Therapeutic Index Drugs|Negative Inotrope|OCT1 inhibitors|OCT2 Inhibitors|OCT2 Substrates with a Narrow Therapeutic Index|para-Aminobenzoates|QTc Prolonging Agents|Sodium Channel Blockers|Voltage-Gated Sodium Channel Blockers
+  Sulpiride - Score: 0.39 - Disease Area: Acids, Carbocyclic|Amides|Antidepressive Agents|Antidepressive Agents, Second-Generation|Antipsychotic Agents|BCRP/ABCG2 Substrates|Benzamides and benzamide derivatives|Benzene Derivatives|Benzoates|Central Nervous System Agents|Central Nervous System Depressants|Cholinesterase Inhibitors|Dopamine Agents|Dopamine Antagonists|Dopamine D2 Receptor Antagonists|MATE 1 Substrates|MATE 2 Substrates|MATE substrates|Moderate Risk QTc-Prolonging Agents|Nervous System|Neurotoxic agents|Neurotransmitter Agents|OCT1 substrates|OCT2 Substrates|P-glycoprotein substrates|Psycholeptics|Psychotropic Drugs|QTc Prolonging Agents|Tranquilizing Agents
+  Tafenoquine - Score: 0.37 - Disease Area: Aminoquinolines|Anti-Infective Agents|Antimalarials|Antiparasitic Agents|Antiparasitic Products, Insecticides and Repellents|Antiprotozoals|Cytochrome P-450 CYP2D6 Substrates|Cytochrome P-450 Substrates|Heterocyclic Compounds, Fused-Ring|MATE 1 Inhibitors|MATE 2 Inhibitors|MATE inhibitors|OCT2 Inhibitors|Quinolines
+  Tipiracil - Score: 0.35 - Disease Area: MATE 1 Substrates|MATE 1 Substrates with a Narrow Therapeutic Index|MATE substrates|Narrow Therapeutic Index Drugs|OCT2 Substrates|OCT2 Substrates with a Narrow Therapeutic Index|Pyrimidines|Pyrimidinones|Thymidine Phosphorylase Inhibitor
+Number of drugs with features: 10976
+Metformin features in model - Genes: 11, Pathways: 0
+Metformin genes: ['ETFDH', 'PRKAB1', 'SLC47A1', 'ACACB', 'GPD1', 'SLC22A1', 'SLC22A2', 'SLC22A3', 'SLC47A1', 'SLC29A4', 'SLC47A2']
+Metformin pathways: []

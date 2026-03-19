@@ -32,7 +32,12 @@ class RepurposingCandidate:
     similarity_score: float
     shared_targets: List[str]
     shared_pathways: List[str]
+    atc_code: Optional[str] = None
+    category: Optional[str] = None
+    mechanism: Optional[str] = None
+    indication: Optional[str] = None
     sources: List[Source] = field(default_factory=list)
+    vector: List[float] = field(default_factory=list) # For 2D/3D visualization
 
     def to_dict(self):
         return {
@@ -42,7 +47,12 @@ class RepurposingCandidate:
             "similarity_score": round(self.similarity_score, 4),
             "shared_targets": self.shared_targets,
             "shared_pathways": self.shared_pathways,
+            "atc_code": self.atc_code,
+            "category": self.category,
+            "mechanism": self.mechanism,
+            "indication": self.indication,
             "sources": [{"label": s.label, "url": s.url} for s in self.sources],
+            "vector": self.vector,
         }
 
 
@@ -55,6 +65,7 @@ class AnalysisReport:
     repurposing_candidates: List[RepurposingCandidate]
     interaction_warnings: List[str]
     clinical_trials: List[dict]
+    target_vector: List[float] = field(default_factory=list)
     module_results: List[ModuleResult] = field(default_factory=list)
 
     def to_dict(self):
@@ -66,5 +77,6 @@ class AnalysisReport:
             "repurposing_candidates": [c.to_dict() for c in self.repurposing_candidates],
             "interaction_warnings": self.interaction_warnings,
             "clinical_trials": self.clinical_trials,
+            "target_vector": self.target_vector,
             "module_results": [m.to_dict() for m in self.module_results],
         }

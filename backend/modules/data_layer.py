@@ -8,8 +8,9 @@ from fuzzywuzzy import process
 from dotenv import load_dotenv
 
 load_dotenv()
+BASE_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../"))
 
-DATA_DIR = os.getenv("DATA_DIR", "data")
+DATA_DIR = os.path.join(BASE_DIR, "data")
 
 
 class DataLayer:
