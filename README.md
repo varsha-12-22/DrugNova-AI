@@ -1,215 +1,183 @@
 # DrugNova AI 🔬
-### Autonomous Drug Repurposing Platform
+### Autonomous Drug Repurposing & Market Intelligence Platform
 
-DrugNova AI accepts a drug name as input, computes biological similarity across 19,000+ approved and experimental compounds using gene targets and pathways, and generates a traceable repurposing opportunity report — identifying candidate diseases a drug could potentially treat beyond its current indication.
-
----
-
-## How it works
-
-```
-User inputs drug name
-        ↓
-Fuzzy match → DrugBank ID
-        ↓
-Build feature vector (gene targets + pathways + ATC class)
-        ↓
-Cosine similarity across all 19,842 drugs
-        ↓
-Find top-N similar drugs with different disease areas
-        ↓
-Explain: which shared targets/pathways drove the score
-        ↓
-┌─────────────────────────────────────────────────┐
-│          Parallel domain enrichment             │
-│                                                 │
-│  ClinicalTrials.gov — active trials             │
-│  PubChem           — compound metadata          │
-│  OpenFDA           — regulatory + recalls       │
-│  PatentsView       — patent landscape           │
-│  SEC EDGAR         — company investment signals │
-│  CMS Medicare      — market size + spending     │
-└─────────────────────────────────────────────────┘
-        ↓
-Return structured report with traceable citations
-```
+DrugNova AI is an advanced research platform that identifies repurposing opportunities for over 19,000+ approved and experimental compounds. By computing biological similarity across gene targets and pathways, it generates traceable reports for candidate diseases, enriched with real-time clinical, regulatory, and patent data.
 
 ---
 
-## Project Structure
+## 🚀 Key Features
+
+- **Biological Similarity Engine**: Uses high-dimensional feature vectors (gene targets + pathways + ATC class) and cosine similarity to find repurposing candidates.
+- **Dynamic Vector Explorer**: SVG-powered visualization of similarity vectors between the input drug and candidates.
+- **Automated Intelligence**: Aggregates data from ClinicalTrials.gov, PubChem, OpenFDA, and the FDA Orange Book.
+- **Traceable Reports**: Every finding includes primary source citations (DrugBank IDs, clinical trial IDs, etc.).
+- **Professional PDF Export**: Generate dark-themed, data-rich analysis reports using `jsPDF`.
+- **JWT Authentication**: User-specific profiles with adaptive UI based on research purpose (Academic, Discovery, Healthcare, etc.).
+
+---
+
+## 🛠️ Tech Stack
+
+- **Backend**: Python 3.10+, FastAPI, Pandas, RapidFuzz, Scikit-learn, SQLite.
+- **Frontend**: React 19, Vite, Lucide React, SVG Animations.
+- **Reporting**: jsPDF (Professional PDF Generation).
+- **Design**: Premium Glassmorphism UI, Responsive Web Design.
+
+---
+
+## 📁 Project Structure
 
 ```
 DrugNova-AI/
-├── data/                            # CSV files — local only, NOT on GitHub
-│   ├── drugs_core.csv               # 19,842 rows — name, groups, indication, disease_area, MOA
-│   ├── targets.csv                  # 34,931 rows — drugbank_id, gene_symbol, actions
-│   ├── pathways.csv                 # 205,292 rows — drugbank_id, pathway_name, category
-│   ├── atc_codes.csv                # 5,780 rows — drugbank_id, ATC hierarchy
-│   ├── drug_interactions_part1.csv  # 900,000 rows
-│   ├── drug_interactions_part2.csv  # 900,000 rows
-│   ├── drug_interactions_part3.csv  # 900,000 rows
-│   └── drug_interactions_part4.csv  # 211,156 rows
+├── data/                            # Core Databanks (Local CSVs)
+│   ├── drugs_core.csv               # 19,842 rows — drug groups, indications, disease areas
+│   ├── targets.csv                  # 34,931 rows — drugbank_id ↔ gene_symbol mapping
+│   ├── pathways.csv                 # 205,292 rows — drugbank_id ↔ pathway mapping
+│   ├── patents_all.csv              # FDA Orange Book patent & exclusivity records
+│   ├── atc_codes.csv                # ATC hierarchy classification
+│   └── drug_interactions_part[1-4].csv # 2.9M+ interaction records
 │
-├── backend/
+├── backend/                         # FastAPI Application
 │   ├── modules/
-│   │   ├── data_layer.py            # P1 — CSV loading + fuzzy drug name lookup
-│   │   ├── interactions.py          # P2 — SQLite ingestion + interaction queries
-│   │   ├── model.py                 # P3 — feature vectors + cosine similarity engine
-│   │   ├── explainer.py             # P4 — traceable explanation generator
-│   │   ├── external_apis.py         # P5 — ClinicalTrials.gov + PubChem
-│   │   ├── regulatory_api.py        # P5 — OpenFDA regulatory scan
-│   │   ├── patent_api.py            # P5 — PatentsView patent landscape
-│   │   ├── sec_api.py               # P5 — SEC EDGAR investment signals
-│   │   └── market_api.py            # P5 — CMS Medicare/Medicaid market size
+│   │   ├── data_layer.py            # Fuzzy drug lookup + CSV management
+│   │   ├── model.py                 # Cosine similarity engine + vector generation
+│   │   ├── explainer.py             # Biological similarity reasoning
+│   │   ├── interactions.py          # Interaction query engine (SQLite)
+│   │   ├── patent.py                # FDA Orange Book patent analysis
+│   │   ├── regulatory_api.py        # OpenFDA regulatory scan
+│   │   ├── market_api.py            # FDA FAERS market size signals
+│   │   └── external_apis.py         # ClinicalTrials.gov & PubChem
 │   ├── utils/
-│   │   ├── contracts.py             # Shared data contracts — everyone imports this
-│   │   └── db.py                    # SQLite connection helper
-│   └── main.py                      # P6 — FastAPI server + /analyze endpoint
+│   │   ├── contracts.py             # Shared Pydantic data models
+│   │   └── db.py                    # SQLite connection utilities
+│   ├── auth.py                      # JWT Authentication & User Management
+│   └── main.py                      # FastAPI entry point & API orchestration
 │
-├── frontend/
-│   └── src/
-│       ├── index.html               # Main UI
-│       ├── app.js                   # Drug input + report rendering
-│       └── style.css                # Styles
+├── frontend-react/                  # Modern React Frontend (Vite)
+│   ├── src/
+│   │   ├── App.jsx                  # Main dashboard & API integration
+│   │   ├── Login.jsx                # Auth flow (Register/Login)
+│   │   ├── Profile.jsx              # User preferences & Purpose selection
+│   │   ├── DrugSimilarityViz.jsx    # SVG Vector Visualization
+│   │   ├── CarbonLoading.jsx        # Premium micro-animations
+│   │   └── BioBackground.jsx        # Interactive background effects
+│   └── vite.config.js               # Frontend build config
 │
-├── scripts/
-│   └── build_interactions_db.py     # Run once to build interactions.db from CSVs
+├── scripts/                         # Maintenance Scripts
+│   └── build_interactions_db.py     # CSV to SQLite conversion (Run once)
 │
-├── .env.example                     # Copy to .env and fill in API keys
-├── .gitignore
-├── requirements.txt
-└── README.md
+├── interactions.db                  # Ingested interaction database (Local)
+└── requirements.txt                 # Python dependencies
 ```
 
 ---
 
-## Team & Branches
+## 🧪 How it works
 
-| Person | Branch | File(s) | Responsible For |
-|--------|--------|---------|-----------------|
-| P1 | `feature/data-layer` | `modules/data_layer.py` | Load CSVs, fuzzy drug name → drugbank_id lookup |
-| P2 | `feature/interactions-db` | `modules/interactions.py` + `scripts/build_interactions_db.py` | SQLite ingestion + interaction queries |
-| P3 | `feature/model` | `modules/model.py` | Feature vectors + cosine similarity engine |
-| P4 | `feature/explainer` | `modules/explainer.py` | Traceable explanation from shared features |
-| P5 | `feature/external-apis` | `modules/external_apis.py`, `regulatory_api.py`, `patent_api.py`, `sec_api.py`, `market_api.py` | All 5 external API integrations |
-| P6 | `feature/api-server` | `backend/main.py` + `frontend/` | FastAPI endpoint + UI |
-
----
-
-## API Modules
-
-| Module | Source | Key needed? | What it provides |
-|--------|--------|-------------|-----------------|
-| Clinical trials | ClinicalTrials.gov | ✅ No | Active + completed trials for the drug |
-| Compound metadata | PubChem | ✅ No | Molecular formula, weight, IUPAC name |
-| Regulatory scan | OpenFDA | ✅ No | FDA approval, label info, recall history |
-| Patent landscape | PatentsView | ⚠️ Yes* | Patent titles, assignees, filing dates |
-| Investment signals | SEC EDGAR | ✅ No | Companies mentioning drug in 10-K/10-Q filings |
-| Market size | CMS Medicare/Medicaid | ✅ No | Drug spending, claim counts, avg cost |
-
-> *PatentsView new key grants temporarily suspended as of March 2026. Apply at patentsview.org/apis/keyrequest. Module skips gracefully if no key is set.
+```mermaid
+graph TD
+    A[User Inputs Drug Name] --> B{Fuzzy Match}
+    B -->|Found| C[Retrieve Biological Fingerprint]
+    C --> D[Compute Cosine Similarity]
+    D --> E[Identify Similarity Vectors]
+    E --> F[Parallel Data Enrichment]
+    
+    subgraph Enrichment
+    F1[ClinicalTrials.gov - Trials]
+    F2[PubChem - Molecular Data]
+    F3[OpenFDA - Regulatory Scan]
+    F4[FDA Orange Book - Patent Gap]
+    F5[FDA FAERS - Market Usage]
+    end
+    
+    F --> F1 & F2 & F3 & F4 & F5
+    F1 & F2 & F3 & F4 & F5 --> G[Generate Traceable Report]
+    G --> H[Export to PDF / Interactive Viz]
+```
 
 ---
 
-## Setup (every teammate)
+## 🔧 Setup & Installation
 
-### 1. Clone the repo
+### 1. Repository Setup
 ```bash
 git clone https://github.com/varsha-12-22/DrugNova-AI.git
 cd DrugNova-AI
 ```
 
-### 2. Install dependencies
+### 2. Backend Environment
 ```bash
+# Create and activate venv
+python -m venv venv
+# Linux/Mac: source venv/bin/activate
+# Windows: venv\Scripts\activate
+
+# Install dependencies
 pip install -r requirements.txt
-```
 
-### 3. Set up environment variables
-```bash
-cp .env.example .env
-```
-Open `.env` — add your PatentsView API key if you have one. Everything else works without a key.
-
-### 4. Add data files
-Download the 8 CSV files from the shared Google Drive and place them in `data/`
-
-```bash
-ls data/   # should show all 8 files
-```
-
-### 5. Build the interactions database (run once)
-```bash
+# Build the interactions database (requires local CSV files)
 python scripts/build_interactions_db.py
 ```
-Converts the 4 interaction CSVs (2.9M rows, 359MB) into a fast SQLite database.
 
----
-
-## Running the app
-
+### 3. Frontend Environment
 ```bash
-# Start the backend (from project root)
-uvicorn backend.main:app --reload
-
-# API available at http://localhost:8000
-
-# Test it
-curl -X POST http://localhost:8000/analyze \
-  -H "Content-Type: application/json" \
-  -d '{"drug_name": "Metformin"}'
+cd frontend-react
+npm install
 ```
 
+### 4. Data Requirements
+Download the core CSV files and place them in the `data/` directory:
+- `drugs_core.csv`
+- `targets.csv`
+- `pathways.csv`
+- `patents_all.csv`
+- `atc_codes.csv`
+- `drug_interactions_part1-4.csv`
+
 ---
 
-## Module Output Contract
+## 🚦 Running the Application
 
-Every module returns this shape. Import from `backend/utils/contracts.py`:
+### Start the Backend (Terminal 1)
+```bash
+# From project root
+uvicorn backend.main:app --reload
+```
+*API available at `http://localhost:8000`*
 
-```python
+### Start the Frontend (Terminal 2)
+```bash
+cd frontend-react
+npm run dev
+```
+*UI available at `http://localhost:5173`*
+
+---
+
+## 🧬 Module Integration
+
+Every module adheres to a strict contract defined in `backend/utils/contracts.py`.
+
+**Example Result Schema:**
+```json
 {
-  "module": "model",
+  "module": "patents",
   "findings": [
-    "Metformin shares 4 gene targets with Drug X (approved for cancer): AMPK, TP53, MTOR, PRKAA1",
-    "Shared pathways: Insulin Signaling, mTOR Signaling — both implicated in tumor growth"
+    "FDA Orange Book — 12 patent records found",
+    "Earliest patent expiry: Oct 23, 2026",
+    "Repurposing window: APPROACHING — expires within 1 year"
   ],
   "sources": [
     {
-      "label": "DrugBank targets — DB00331",
-      "url": "https://go.drugbank.com/drugs/DB00331"
+      "label": "FDA Orange Book — Patent Data",
+      "url": "https://www.accessdata.fda.gov/scripts/cder/ob/index.cfm"
     }
   ],
-  "score": 0.84
+  "score": 0.85
 }
 ```
 
 ---
 
-## Data Sources
-
-| Source | Used For |
-|--------|----------|
-| DrugBank CSVs | Core drug biology — targets, pathways, indications |
-| ClinicalTrials.gov API | Active trial enrichment |
-| PubChem API | Compound metadata |
-| OpenFDA API | Regulatory status + recall history |
-| PatentsView API | Patent landscape + assignees |
-| SEC EDGAR API | Company investment signals |
-| CMS Medicare/Medicaid | Market size approximation |
-
----
-
-## Key Design Decisions
-
-**Why cosine similarity?**
-Each drug is represented as a binary vector of gene targets + pathways. Cosine similarity finds drugs that share biology. Drugs with high similarity but different disease areas = repurposing candidates.
-
-**Why SQLite for interactions?**
-The 4 interaction CSV files total 359MB and 2.9M rows. Loading into pandas on every request would be too slow. SQLite with an index on `drugbank_id` gives instant lookups.
-
-**Why traceable by design?**
-Every repurposing suggestion maps directly back to the specific CSV rows that caused the similarity score. No black box — every claim has a source.
-
----
-
-> Built for the Autonomous Research Orchestrator Hackathon
-> Team: 6 members | Stack: Python · FastAPI · scikit-learn · React
+> Built for the **Autonomous Research Orchestrator Hackathon**
+> **Team:** 6 members | **Stack:** Python · FastAPI · React · Scikit-Learn

@@ -1,7 +1,7 @@
 import Login from './Login';
 import { useState } from 'react';
 import { jsPDF } from 'jspdf';
-import { Search, Activity, SearchIcon, Sparkles, Beaker, Pill, AlertTriangle, ExternalLink, ActivitySquare, ShieldCheck, FileText, TrendingUp, FlaskConical, Download, ArrowRight, Database, Cpu, Globe, User } from 'lucide-react';
+import { Search, Activity, SearchIcon, Sparkles, Beaker, Pill, AlertTriangle, ExternalLink, ActivitySquare, ShieldCheck, FileText, TrendingUp, FlaskConical, Download, ArrowRight, Database, Cpu, Globe, User, Zap } from 'lucide-react';
 import './index.css';
 import BioBackground from './BioBackground';
 import CarbonLoading from './CarbonLoading';
@@ -99,7 +99,7 @@ const CandidateCard = ({ candidate, idx }) => {
 };
 
 // ── Landing Page ──────────────────────────────────────────────────────────────
-const LandingPage = ({ onStart ,user}) => (
+const LandingPage = ({ onStart, user }) => (
   <>
     <BioBackground />
     <div className="content-overlay">
@@ -170,6 +170,81 @@ const LandingPage = ({ onStart ,user}) => (
             <p>Every finding is cited with primary sources — DrugBank, ClinicalTrials.gov, FDA Orange Book</p>
           </div>
         </div>
+
+        {/* Section 1 — Scalability & Market */}
+        <div className="section-header" style={{ marginTop: '5rem', textAlign: 'center', justifyContent: 'center' }}>
+          <TrendingUp className="logo-icon" size={24} />
+          <h2 style={{ flex: 'none' }}>Scalability & Market Potential</h2>
+        </div>
+
+        <div className="landing-stats" style={{ marginTop: '1.5rem' }}>
+          <div className="stat-card glass">
+            <Globe size={28} className="stat-icon" />
+            <div className="stat-number">$280B</div>
+            <div className="stat-label">Global Pharma R&D Spend</div>
+          </div>
+          <div className="stat-card glass">
+            <Database size={28} className="stat-icon" />
+            <div className="stat-number">10,000+</div>
+            <div className="stat-label">Repurposing Opportunities Identified Annually</div>
+          </div>
+          <div className="stat-card glass">
+            <Zap size={28} className="stat-icon" />
+            <div className="stat-number">3-5x</div>
+            <div className="stat-label">Faster than Traditional Discovery</div>
+          </div>
+        </div>
+
+        <div className="landing-features" style={{ marginTop: '2.5rem' }}>
+          <div className="feature-card glass">
+            <ActivitySquare size={24} className="stat-icon" />
+            <h3>Pharma R&D Teams</h3>
+            <p>Accelerate pipeline decisions and optimize resource allocation with data-driven insights</p>
+          </div>
+          <div className="feature-card glass">
+            <FlaskConical size={24} className="stat-icon" />
+            <h3>Biotech Startups</h3>
+            <p>Identify high-potential repurposing candidates even with limited initial discovery budgets</p>
+          </div>
+          <div className="feature-card glass">
+            <Beaker size={24} className="stat-icon" />
+            <h3>Academic Researchers</h3>
+            <p>Access traceable evidence and comprehensive biological fingerprints for high-impact publications</p>
+          </div>
+        </div>
+
+        <p className="hint" style={{ marginTop: '2.5rem', opacity: 0.8, fontSize: '1rem', letterSpacing: '0.05em' }}>
+          Expanding to rare diseases <span style={{ color: 'var(--accent)', margin: '0 8px' }}>→</span> real-time trial integration <span style={{ color: 'var(--accent)', margin: '0 8px' }}>→</span> API licensing
+        </p>
+
+        {/* Section 2 — Business Model */}
+        <div className="section-header" style={{ marginTop: '6rem', textAlign: 'center', justifyContent: 'center' }}>
+          <Database className="logo-icon" size={24} />
+          <h2 style={{ flex: 'none' }}>Business Model</h2>
+        </div>
+
+        <div className="landing-features" style={{ marginTop: '2.5rem' }}>
+          <div className="feature-card glass">
+            <div style={{ fontSize: '1.3rem', fontWeight: '700', color: '#fff', marginBottom: '12px' }}>Free</div>
+            <p>Basic repurposing search, top 5 candidates, DrugBank data only</p>
+          </div>
+          <div className="feature-card glass" style={{ border: '1px solid var(--accent)', boxShadow: '0 0 25px rgba(0, 255, 204, 0.25)', borderTop: '4px solid var(--accent)' }}>
+            <div style={{ fontSize: '1.3rem', fontWeight: '700', color: 'var(--accent)', marginBottom: '12px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              Pro <span style={{ fontSize: '0.9rem', background: 'var(--accent)', color: '#000', padding: '2px 8px', borderRadius: '4px' }}>Recommended</span>
+            </div>
+            <div style={{ fontSize: '1.8rem', fontWeight: '700', color: '#fff', marginBottom: '12px' }}>$99<span style={{ fontSize: '0.9rem', color: 'var(--muted)' }}>/mo</span></div>
+            <p>Full report, all 7 data sources, citation export, API access</p>
+          </div>
+          <div className="feature-card glass">
+            <div style={{ fontSize: '1.3rem', fontWeight: '700', color: '#fff', marginBottom: '12px' }}>Enterprise</div>
+            <p style={{ fontSize: '1.5rem', fontWeight: '700', color: '#fff', marginBottom: '12px' }}>Custom</p>
+            <p>White-label integration, bulk analysis, dedicated support</p>
+          </div>
+        </div>
+
+        <p className="hint" style={{ marginTop: '2.5rem', opacity: 0.8, fontSize: '1rem', letterSpacing: '0.05em' }}>
+          Funding path — open source core + SaaS revenue + pharma partnership licensing
+        </p>
       </div>
       {user && (
         <div className="landing-header-user">
@@ -190,38 +265,38 @@ const LandingPage = ({ onStart ,user}) => (
 
 // ── Tab Navigation ────────────────────────────────────────────────────────────
 const ALL_TABS = [
-  { id: 'overview',     label: 'Overview',     icon: Pill },
-  { id: 'clinical',     label: 'Clinical',     icon: ActivitySquare },
+  { id: 'overview', label: 'Overview', icon: Pill },
+  { id: 'clinical', label: 'Clinical', icon: ActivitySquare },
   { id: 'intelligence', label: 'Intelligence', icon: TrendingUp },
-  { id: 'chemistry',    label: 'Chemistry',    icon: FlaskConical },
+  { id: 'chemistry', label: 'Chemistry', icon: FlaskConical },
 ];
 
 const PURPOSE_TABS = {
-  "Academic Research":       ['overview', 'clinical', 'chemistry'],
-  "Drug Discovery":          ['overview', 'clinical', 'intelligence', 'chemistry'],
+  "Academic Research": ['overview', 'clinical', 'chemistry'],
+  "Drug Discovery": ['overview', 'clinical', 'intelligence', 'chemistry'],
   "Healthcare Professional": ['overview', 'clinical'],
-  "Personal Learning":       ['overview', 'clinical', 'chemistry'],
+  "Personal Learning": ['overview', 'clinical', 'chemistry'],
 };
 
 const PURPOSE_SEARCH_HINT = {
-  "Academic Research":       "Search compounds for research analysis...",
-  "Drug Discovery":          "Search compounds for pipeline discovery...",
+  "Academic Research": "Search compounds for research analysis...",
+  "Drug Discovery": "Search compounds for pipeline discovery...",
   "Healthcare Professional": "Search compounds for clinical insights...",
-  "Personal Learning":       "Search compounds to learn about drug biology...",
+  "Personal Learning": "Search compounds to learn about drug biology...",
 };
 
 const PURPOSE_WELCOME = {
-  "Academic Research":       "Exploring drug repurposing for research",
-  "Drug Discovery":          "Accelerating your drug pipeline",
+  "Academic Research": "Exploring drug repurposing for research",
+  "Drug Discovery": "Accelerating your drug pipeline",
   "Healthcare Professional": "Evidence-based repurposing insights",
-  "Personal Learning":       "Discover the science of drug repurposing",
+  "Personal Learning": "Discover the science of drug repurposing",
 };
 
 const PURPOSE_BADGE_ICON = {
-  "Academic Research":       "🔬",
-  "Drug Discovery":          "💊",
+  "Academic Research": "🔬",
+  "Drug Discovery": "💊",
   "Healthcare Professional": "🏥",
-  "Personal Learning":       "📚",
+  "Personal Learning": "📚",
 };
 
 function App() {
@@ -248,11 +323,11 @@ function App() {
   };
 
   // ── App state ──────────────────────────────────────────────────────────────
-  const [page, setPage]           = useState('landing');
-  const [drugName, setDrugName]   = useState("");
-  const [loading, setLoading]     = useState(false);
-  const [report, setReport]       = useState(null);
-  const [error, setError]         = useState(null);
+  const [page, setPage] = useState('landing');
+  const [drugName, setDrugName] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [report, setReport] = useState(null);
+  const [error, setError] = useState(null);
   const [activeTab, setActiveTab] = useState('overview');
   const [showFullDisease, setShowFullDisease] = useState(false);
 
@@ -404,11 +479,11 @@ function App() {
       <>
         <BioBackground />
         <div className="content-overlay">
-          <Profile 
-            user={user} 
-            onUpdate={handleProfileUpdate} 
-            onLogout={handleLogout} 
-            onBack={() => setPage('search')} 
+          <Profile
+            user={user}
+            onUpdate={handleProfileUpdate}
+            onLogout={handleLogout}
+            onBack={() => setPage('search')}
           />
         </div>
       </>
