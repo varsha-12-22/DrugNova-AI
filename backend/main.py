@@ -2,7 +2,7 @@
 # FastAPI server — wires all modules into a single /analyze endpoint
 # Trigger uvicorn reload to load new CSVs
 
-from fastapi import FastAPI, HTTPException
+from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
@@ -16,6 +16,11 @@ from backend.modules.regulatory_api import fetch_regulatory
 
 from backend.modules.market_api import fetch_market_data
 from backend.utils.contracts import AnalysisReport
+from backend.auth import (
+    register_user, login_user, create_token,
+    get_current_user, PURPOSE_OPTIONS
+)
+from pydantic import BaseModel as PydanticBase
 
 app = FastAPI(title="DrugNova AI", version="1.0.0")
 
@@ -31,11 +36,58 @@ class AnalyzeRequest(BaseModel):
     drug_name: str
     top_n: int = 10
 
+class RegisterRequest(BaseModel):
+    name:     str
+    email:    str
+    password: str
+    purpose:  str
+
+class LoginRequest(BaseModel):
+    email:    str
+    password: str
+
 
 @app.get("/")
 def root():
     return {"status": "DrugNova AI is running"}
 
+@app.get("/purposes")
+def get_purposes():
+    return {"purposes": PURPOSE_OPTIONS}
+
+@app.post("/register")
+def register(req: RegisterRequest):
+    user = register_user(req.name, req.email, req.password, req.purpose)
+    token = create_token({
+        "email":   user["email"],
+        "name":    user["name"],
+        "purpose": user["purpose"]
+    })
+    return {
+        "token":   token,
+        "name":    user["name"],
+        "email":   user["email"],
+        "purpose": user["purpose"]
+    }
+
+@app.post("/login")
+def login(req: LoginRequest):
+    user = login_user(req.email, req.password)
+    token = create_token({
+        "email":   user["email"],
+        "name":    user["name"],
+        "purpose": user["purpose"]
+    })
+    return {
+        "token":   token,
+        "name":    user["name"],
+        "email":   user["email"],
+        "purpose": user["purpose"]
+    }
+
+@app.get("/me")
+def me(current_user: dict = Depends(get_current_user)):
+    return current_user
 
 @app.post("/analyze")
 def analyze(req: AnalyzeRequest):

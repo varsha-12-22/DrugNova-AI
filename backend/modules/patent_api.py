@@ -1,84 +1,99 @@
-# backend/modules/patent_api.py
-# Patent landscape scan using PatentsView PatentSearch API
-# Docs: https://search.patentsview.org/docs/
-# Requires API key: https://patentsview.org/apis/keyrequest
-# Set PATENTSVIEW_API_KEY in your .env file
-
-import os
 import requests
-from dotenv import load_dotenv
 from backend.utils.contracts import ModuleResult, Source
 
-load_dotenv()
+# CMS data.cms.gov uses a Socrata-style open data API
+CMS_PART_D   = "https://data.cms.gov/resource/jznz-jg8e.json"   # Medicare Part D
+CMS_MEDICAID = "https://data.cms.gov/resource/2u5j-ttfp.json"   # Medicaid
 
-API_KEY = os.getenv("PATENTSVIEW_API_KEY", "")
-BASE_URL = "https://search.patentsview.org/api/v1/patent/"
 
-
-def fetch_patents(drug_name: str, max_results: int = 5) -> ModuleResult:
+def fetch_market_data(drug_name: str) -> ModuleResult:
     """
-    Searches for patents related to a drug name.
-    Returns patent titles, assignees (companies), dates, and IDs.
-    Falls back gracefully if no API key is set.
+    Fetches Medicare Part D and Medicaid spending data for a drug.
+    Returns total spending, claim counts, and average cost per claim —
+    used as a market size approximation.
     """
-    if not API_KEY:
-        return ModuleResult(
-            module="patents",
-            findings=["PatentsView API key not configured. Add PATENTSVIEW_API_KEY to .env"],
-            sources=[]
-        )
+    findings = []
+    sources  = []
 
+    # --- Medicare Part D ---
     try:
-        headers = {"X-Api-Key": API_KEY}
-
-        # Search patents whose abstract contains the drug name
-        params = {
-            "q": f'{{"_text_any":{{"patent_abstract":"{drug_name}"}}}}',
-            "f": '["patent_id","patent_title","patent_date","assignees.assignee_organization","patent_abstract"]',
-            "o": f'{{"size":{max_results},"sort":[{{"patent_date":"desc"}}]}}'
-        }
-
-        response = requests.get(BASE_URL, headers=headers, params=params, timeout=10)
-
-        if response.status_code == 429:
-            return ModuleResult(
-                module="patents",
-                findings=["PatentsView rate limit hit — try again in a minute."],
-                sources=[]
-            )
-
-        data = response.json()
-        patents = data.get("patents", [])
-        findings = []
-
-        for p in patents:
-            patent_id   = p.get("patent_id", "N/A")
-            title       = p.get("patent_title", "Untitled")
-            date        = p.get("patent_date", "Unknown date")
-            assignees   = p.get("assignees", [])
-            orgs        = ", ".join(
-                a.get("assignee_organization", "Unknown") for a in assignees if a.get("assignee_organization")
-            ) or "No assignee listed"
-
-            findings.append(
-                f"Patent {patent_id} ({date}): {title} | Held by: {orgs}"
-            )
-
-        if not findings:
-            findings = [f"No patents found for '{drug_name}' in PatentsView."]
-
-        return ModuleResult(
-            module="patents",
-            findings=findings,
-            sources=[Source(
-                label="PatentsView PatentSearch API",
-                url=f"https://search.patentsview.org/query/?q={{\"_text_any\":{{\"patent_abstract\":\"{drug_name}\"}}}}"
-            )]
+        resp = requests.get(
+            CMS_PART_D,
+            params={
+                "$where": f"upper(brnd_name) like '%{drug_name.upper()}%' OR upper(gnrc_name) like '%{drug_name.upper()}%'",
+                "$limit": 5,
+                "$order": "tot_spndng DESC"
+            },
+            timeout=10
         )
+        rows = resp.json()
+
+        if rows and isinstance(rows, list) and "brnd_name" in rows[0]:
+            findings.append("Medicare Part D spending data:")
+            for r in rows[:3]:
+                brand     = r.get("brnd_name", drug_name)
+                year      = r.get("year", "?")
+                spending  = float(r.get("tot_spndng", 0))
+                claims    = int(float(r.get("tot_clms", 0)))
+                avg_cost  = float(r.get("avg_spnd_per_clm", 0))
+
+                findings.append(
+                    f"  {brand} ({year}): "
+                    f"Total spending ${spending:,.0f} | "
+                    f"Claims: {claims:,} | "
+                    f"Avg cost/claim: ${avg_cost:,.2f}"
+                )
+            sources.append(Source(
+                label="CMS Medicare Part D Drug Spending",
+                url=f"https://data.cms.gov/summary-statistics-on-use-and-payments/medicare-medicaid-spending-by-drug/medicare-part-d-spending-by-drug"
+            ))
+        else:
+            findings.append(f"No Medicare Part D spending data found for '{drug_name}'.")
 
     except Exception as e:
-        return ModuleResult(
-            module="patents",
-            findings=[f"Patent lookup failed: {str(e)}"],
-            sources=[]
+        findings.append(f"CMS Part D lookup failed: {str(e)}")
+
+    # --- Medicaid ---
+    try:
+        resp = requests.get(
+            CMS_MEDICAID,
+            params={
+                "$where": f"upper(drug_name) like '%{drug_name.upper()}%'",
+                "$limit": 3,
+                "$order": "total_spending DESC"
+            },
+            timeout=10
         )
+        rows = resp.json()
+
+        if rows and isinstance(rows, list) and "drug_name" in rows[0]:
+            findings.append("Medicaid spending data:")
+            for r in rows[:2]:
+                name      = r.get("drug_name", drug_name)
+                year      = r.get("year", "?")
+                spending  = float(r.get("total_spending", 0))
+                units     = float(r.get("total_units", 0))
+
+                findings.append(
+                    f"  {name} ({year}): "
+                    f"Total spending ${spending:,.0f} | "
+                    f"Units dispensed: {units:,.0f}"
+                )
+            sources.append(Source(
+                label="CMS Medicaid Drug Spending",
+                url="https://data.cms.gov/summary-statistics-on-use-and-payments/medicare-medicaid-spending-by-drug/medicaid-spending-by-drug"
+            ))
+        else:
+            findings.append(f"No Medicaid spending data found for '{drug_name}'.")
+
+    except Exception as e:
+        findings.append(f"CMS Medicaid lookup failed: {str(e)}")
+
+    if not findings:
+        findings = [f"No market spending data found for '{drug_name}'."]
+
+    return ModuleResult(
+        module="market",
+        findings=findings,
+        sources=sources
+    )
