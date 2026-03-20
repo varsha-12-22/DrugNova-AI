@@ -955,36 +955,115 @@ main {
 .welcome-banner {
   display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 14px 20px;
+  gap: 16px;
+  padding: 14px 24px;
   border-radius: 16px;
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
   text-align: left;
+  border: 1.5px solid rgba(79, 209, 197, 0.2);
+  width: 100%;
 }
 
 .purpose-icon-lg {
-  font-size: 2rem;
+  font-size: 2.4rem;
 }
 
 .welcome-name {
-  font-size: 1rem;
-  font-weight: 600;
+  font-size: 1.15rem;
+  font-weight: 700;
   color: #ffffff;
+  margin-bottom: 2px;
 }
 
 .welcome-purpose {
-  font-size: 0.85rem;
-  color: rgba(255,255,255,0.5);
+  font-size: 0.9rem;
+  color: rgba(255,255,255,0.6);
+}
+
+.landing-profile-btn {
+  background: rgba(79, 209, 197, 0.1);
+  border: 1px solid rgba(79, 209, 197, 0.3);
+  color: var(--accent);
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.landing-profile-btn:hover {
+  background: rgba(79, 209, 197, 0.25);
+  transform: scale(1.05);
+  border-color: var(--accent);
 }
 
 /* ── Header user info ─────────────────────────────────────────────────────── */
 .header-user {
+  position: absolute;
+  top: 1rem;
+  right: 1.5rem;
   display: flex;
   align-items: center;
   gap: 12px;
-  margin-top: 8px;
+}
+
+.landing-header-user {
+  position: absolute;
+  top: 1.5rem;
+  right: 2rem;
+  z-index: 100;
+}
+
+.user-profile-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 6px 14px 6px 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--text);
+  text-align: left;
+}
+
+.user-profile-btn:hover {
+  background: var(--surface-hover);
+  border-color: var(--accent);
+  transform: translateY(-1px);
+}
+
+.user-icon-circle {
+  background: var(--surface-hover);
+  color: var(--accent);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border);
+}
+
+.user-info-text {
+  display: flex;
+  flex-direction: column;
+}
+
+.user-name-text {
   font-size: 0.85rem;
-  color: rgba(255,255,255,0.6);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.user-purpose-tag {
+  font-size: 0.7rem;
+  color: var(--muted);
+  font-weight: 500;
 }
 
 .logout-btn {
@@ -996,9 +1075,255 @@ main {
   font-size: 0.8rem;
   cursor: pointer;
   transition: all 0.2s;
+  height: min-content;
 }
 
 .logout-btn:hover {
   border-color: rgba(255,80,80,0.4);
   color: #ff8080;
+}
+
+/* ── Profile Page ────────────────────────────────────────────────────────── */
+.profile-page {
+  padding: 4rem 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.profile-container {
+  width: 100%;
+  max-width: 680px;
+}
+
+.back-link {
+  background: transparent;
+  border: none;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 2rem;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-weight: 500;
+}
+
+.back-link:hover {
+  color: var(--accent);
+  transform: translateX(-4px);
+}
+
+.profile-card {
+  padding: 3rem;
+  border-radius: 20px;
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 2rem;
+}
+
+.profile-avatar {
+  background: var(--surface-hover);
+  border: 1.5px solid var(--accent);
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--accent);
+  box-shadow: 0 0 20px rgba(0, 255, 204, 0.2);
+}
+
+.profile-title h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1.8rem;
+  margin-bottom: 4px;
+}
+
+.profile-title p {
+  color: var(--muted);
+  font-size: 0.95rem;
+}
+
+.profile-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.input-group-row {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.input-group-row label {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+}
+
+.input-group-row input {
+  background: var(--surface-hover);
+  border: 1px solid var(--border);
+  padding: 12px 16px;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: 1rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.input-group-row input:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.input-group-row input.disabled-input {
+  opacity: 0.5;
+  cursor: not-allowed;
+  border-style: dashed;
+}
+
+.input-hint {
+  font-size: 0.8rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.purpose-select-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+@media (max-width: 500px) {
+  .purpose-select-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.purpose-select-btn {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.purpose-select-btn .p-icon {
+  font-size: 1.4rem;
+}
+
+.purpose-select-btn .p-text {
+  font-size: 0.95rem;
+  font-weight: 500;
+  color: var(--muted);
+}
+
+.purpose-select-btn:hover {
+  background: var(--surface-hover);
+  transform: translateY(-1px);
+}
+
+.purpose-select-btn.active {
+  background: rgba(0, 255, 204, 0.1);
+  border-color: var(--accent);
+  box-shadow: 0 0 15px rgba(0, 255, 204, 0.1);
+}
+
+.purpose-select-btn.active .p-text {
+  color: var(--accent);
+}
+
+.profile-message {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: -1rem;
+}
+
+.profile-message.success {
+  background: rgba(0, 255, 204, 0.1);
+  border: 1px solid var(--accent);
+  color: var(--accent);
+}
+
+.profile-message.error {
+  background: rgba(255, 77, 77, 0.1);
+  border: 1px solid var(--danger);
+  color: var(--danger);
+}
+
+.profile-actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border);
+}
+
+.save-btn {
+  background: linear-gradient(135deg, #00ffcc 0%, #3b82f6 100%);
+  color: #07090f;
+  border: none;
+  padding: 14px 28px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s;
+}
+
+.save-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(0, 255, 204, 0.2);
+}
+
+.save-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  filter: grayscale(0.2);
+}
+
+.logout-action-btn {
+  background: transparent;
+  color: var(--danger);
+  border: 1.5px solid var(--danger);
+  padding: 14px 24px;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.2s;
+}
+
+.logout-action-btn:hover {
+  background: rgba(255, 77, 77, 0.1);
+  box-shadow: 0 0 15px rgba(255, 77, 77, 0.15);
 }

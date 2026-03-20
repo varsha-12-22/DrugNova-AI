@@ -5,7 +5,7 @@
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
-
+from typing import Optional
 from backend.modules.data_layer import data_layer
 from backend.modules.model import model
 from backend.modules.explainer import explain_candidates
@@ -18,9 +18,8 @@ from backend.modules.market_api import fetch_market_data
 from backend.utils.contracts import AnalysisReport
 from backend.auth import (
     register_user, login_user, create_token,
-    get_current_user, PURPOSE_OPTIONS
+    get_current_user, PURPOSE_OPTIONS, update_user
 )
-from pydantic import BaseModel as PydanticBase
 
 app = FastAPI(title="DrugNova AI", version="1.0.0")
 
@@ -45,6 +44,10 @@ class RegisterRequest(BaseModel):
 class LoginRequest(BaseModel):
     email:    str
     password: str
+
+class UpdateUserRequest(BaseModel):
+    name:     Optional[str] = None
+    purpose:  Optional[str] = None
 
 
 @app.get("/")
@@ -88,6 +91,22 @@ def login(req: LoginRequest):
 @app.get("/me")
 def me(current_user: dict = Depends(get_current_user)):
     return current_user
+
+@app.post("/update-user")
+def update(req: UpdateUserRequest, current_user: dict = Depends(get_current_user)):
+    user = update_user(current_user["email"], req.name, req.purpose)
+    # create new token with updated info
+    token = create_token({
+        "email":   user["email"],
+        "name":    user["name"],
+        "purpose": user["purpose"]
+    })
+    return {
+        "token":   token,
+        "name":    user["name"],
+        "email":   user["email"],
+        "purpose": user["purpose"]
+    }
 
 @app.post("/analyze")
 def analyze(req: AnalyzeRequest):

@@ -1,0 +1,9 @@
+{
+    "owner@zomathon.com": {
+        "name": "Sabaresh",
+        "email": "owner@zomathon.com",
+        "hashed_password": "$2b$12$iYwmmCgSVqK9KqxTvbqOnu1wI4MIA/esYZS27jfzRCmiM2zt6OPE.",
+        "purpose": "Healthcare Professional",
+        "created_at": "2026-03-20T08:33:57.491749"
+    }
+}

@@ -1,11 +1,12 @@
 import Login from './Login';
 import { useState } from 'react';
 import { jsPDF } from 'jspdf';
-import { Search, Activity, SearchIcon, Sparkles, Beaker, Pill, AlertTriangle, ExternalLink, ActivitySquare, ShieldCheck, FileText, TrendingUp, FlaskConical, Download, ArrowRight, Database, Cpu, Globe } from 'lucide-react';
+import { Search, Activity, SearchIcon, Sparkles, Beaker, Pill, AlertTriangle, ExternalLink, ActivitySquare, ShieldCheck, FileText, TrendingUp, FlaskConical, Download, ArrowRight, Database, Cpu, Globe, User } from 'lucide-react';
 import './index.css';
 import BioBackground from './BioBackground';
 import CarbonLoading from './CarbonLoading';
 import DrugSimilarityViz from './DrugSimilarityViz';
+import Profile from './Profile';
 
 const API_BASE = "http://localhost:8000";
 
@@ -111,7 +112,7 @@ const LandingPage = ({ onStart ,user}) => (
           {user && (
             <div className="welcome-banner glass">
               <span className="purpose-icon-lg">{PURPOSE_BADGE_ICON[user.purpose]}</span>
-              <div>
+              <div style={{ flex: 1 }}>
                 <p className="welcome-name">Welcome back, {user.name}</p>
                 <p className="welcome-purpose">{PURPOSE_WELCOME[user.purpose]}</p>
               </div>
@@ -122,7 +123,7 @@ const LandingPage = ({ onStart ,user}) => (
             Discover new therapeutic uses for existing drugs using biological similarity,
             real-time clinical data and multi-source intelligence.
           </p>
-          <button className="landing-cta glass" onClick={onStart}>
+          <button className="landing-cta glass" onClick={() => onStart('search')}>
             <Sparkles size={20} />
             Start Analyzing
             <ArrowRight size={20} />
@@ -170,6 +171,19 @@ const LandingPage = ({ onStart ,user}) => (
           </div>
         </div>
       </div>
+      {user && (
+        <div className="landing-header-user">
+          <button className="user-profile-btn" onClick={() => onStart('profile')}>
+            <span className="user-icon-circle">
+              <User size={18} />
+            </span>
+            <div className="user-info-text">
+              <span className="user-name-text">{user.name}</span>
+              <span className="user-purpose-tag">{PURPOSE_BADGE_ICON[user.purpose]} {user.purpose}</span>
+            </div>
+          </button>
+        </div>
+      )}
     </div>
   </>
 );
@@ -212,8 +226,8 @@ const PURPOSE_BADGE_ICON = {
 
 function App() {
   // ── Auth state ─────────────────────────────────────────────────────────────
-  const storedUser = localStorage.getItem('drugnova_user');
-  const [user, setUser] = useState(storedUser ? JSON.parse(storedUser) : null);
+  // Force login on every refresh by starting with null
+  const [user, setUser] = useState(null);
 
   const handleLogin = (userData) => {
     setUser(userData);
@@ -227,6 +241,10 @@ function App() {
     setPage('landing');
     setReport(null);
     setError(null);
+  };
+
+  const handleProfileUpdate = (updatedUser) => {
+    setUser(updatedUser);
   };
 
   // ── App state ──────────────────────────────────────────────────────────────
@@ -377,7 +395,24 @@ function App() {
 
   // ── Landing page ───────────────────────────────────────────────────────────
   if (page === 'landing') {
-    return <LandingPage onStart={() => setPage('search')} user={user} />;
+    return <LandingPage onStart={(targetPage) => setPage(targetPage)} user={user} />;
+  }
+
+  // ── Profile page ───────────────────────────────────────────────────────────
+  if (page === 'profile') {
+    return (
+      <>
+        <BioBackground />
+        <div className="content-overlay">
+          <Profile 
+            user={user} 
+            onUpdate={handleProfileUpdate} 
+            onLogout={handleLogout} 
+            onBack={() => setPage('search')} 
+          />
+        </div>
+      </>
+    );
   }
 
   // ── Search + Results page ───────────────────────────────────────────────────
@@ -395,8 +430,15 @@ function App() {
           <p className="tagline">Autonomous Drug Repurposing</p>
           {user && (
             <div className="header-user">
-              <span>{PURPOSE_BADGE_ICON[user.purpose]} {user.name}</span>
-              <button className="logout-btn" onClick={handleLogout}>Sign out</button>
+              <button className="user-profile-btn" onClick={() => setPage('profile')}>
+                <span className="user-icon-circle">
+                  <User size={18} />
+                </span>
+                <div className="user-info-text">
+                  <span className="user-name-text">{user.name}</span>
+                  <span className="user-purpose-tag">{PURPOSE_BADGE_ICON[user.purpose]} {user.purpose}</span>
+                </div>
+              </button>
             </div>
           )}
         </header>
