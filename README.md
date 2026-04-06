@@ -5,7 +5,7 @@ DrugNova AI is an advanced research platform that identifies repurposing opportu
 
 ---
 
-## 🚀 Key Features
+🚀 Key Features
 
 - **Biological Similarity Engine**: Uses high-dimensional feature vectors (gene targets + pathways + ATC class) and cosine similarity to find repurposing candidates.
 - **Dynamic Vector Explorer**: SVG-powered visualization of similarity vectors between the input drug and candidates.
@@ -16,7 +16,7 @@ DrugNova AI is an advanced research platform that identifies repurposing opportu
 
 ---
 
-## 🛠️ Tech Stack
+🛠️ Tech Stack
 
 - **Backend**: Python 3.10+, FastAPI, Pandas, RapidFuzz, Scikit-learn, SQLite.
 - **Frontend**: React 19, Vite, Lucide React, SVG Animations.
@@ -25,7 +25,7 @@ DrugNova AI is an advanced research platform that identifies repurposing opportu
 
 ---
 
-## 📁 Project Structure
+📁 Project Structure
 
 ```
 DrugNova-AI/
@@ -72,7 +72,7 @@ DrugNova-AI/
 
 ---
 
-## 🧪 How it works
+🧪 How it works
 
 ```mermaid
 graph TD
@@ -154,7 +154,7 @@ npm run dev
 
 ---
 
-## 🧬 Module Integration
+ 🧬 Module Integration
 
 Every module adheres to a strict contract defined in `backend/utils/contracts.py`.
 
